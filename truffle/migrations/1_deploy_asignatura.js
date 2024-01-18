@@ -1,6 +1,5 @@
-
 let Asignatura = artifacts.require("Asignatura");
 
-module.exports = function(deployer) {
-    deployer.deploy(Asignatura, "BCDA", "2023");
-};
+   module.exports = function(_deployer) {
+       _deployer.deploy(Asignatura, "BCDA", "2023");
+   };

@@ -6,6 +6,7 @@ import EvaluacionesPage from "./evaluaciones/EvaluacionesPage.jsx";
 import AlumnosPage from "./alumnos/AlumnosPage.jsx";
 import AlumnoDetail from "./alumnos/AlumnoDetail.jsx";
 import CalificacionesPage from "./calificaciones/CalificacionesPage.jsx";
+import ProfesoresPage from "./profesoresPage/ProfesoresPage.jsx";
 import MisCosasPage from "./misCosas/MisCosasPage.jsx";
 import NoMatch from './NoMatch';
 
@@ -20,6 +21,7 @@ const App = () => (
                     <Route path="alumnos" element={<AlumnosPage/>}/>
                     <Route path="alumnos/:addr" element={<AlumnoDetail/>}/>
                     <Route path="calificaciones" element={<CalificacionesPage/>}/>
+                    <Route path="profesoresPage" element={<ProfesoresPage/>}/>
                     <Route path="miscosas" element={<MisCosasPage/>}/>
                     <Route path="*" element={<NoMatch/>}/>
                 </Route>

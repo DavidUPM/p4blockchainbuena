@@ -43,7 +43,7 @@ const handleAutomatricularse = async () => {
         setmensajeAutomatricula("Rellene todos los campos");
         
     }else{
-        const automatricula = (await new SubjectService(asignatura).selfRegistration(nombreAlumno, dniAlumno, emailAlumno));
+        const automatricula = (await new SubjectService(asignatura).selfRegistration(nombreAlumno, dniAlumno, emailAlumnos));
         if (automatricula) {
             setmensajeAutomatricula("Te has matriculado correctamente");
         } else {

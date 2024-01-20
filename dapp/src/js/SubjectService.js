@@ -24,11 +24,14 @@ class SubjectService {
 
     async getStudents() {
 
-        let students = null;
+        let students = new Array();
 
         try {
-
-            students = await this.contract.matriculas();
+            length = await this.contract.matriculasLength()
+            for (let i = 0; i < length; i++) {
+                let student = await this.contract.matriculas(i)
+                students.push(student)
+            }
 
         } catch (e) {
 
@@ -39,13 +42,39 @@ class SubjectService {
         return students;
     }
 
-    async getProfessors() {
 
-        let professors = null;
+    async getStudentsInfo() {
+
+        let students = await this.getStudents();
+        let dataList = new Array()
 
         try {
 
-            professors = await this.contract.profesores();
+            for (let i = 0; i < students.length; i++) {
+                let student = await this.contract.datosAlumno(students[i]);
+                student.address = students[i];
+                dataList.push(student);
+            }
+
+        } catch (e) {
+
+            console.log("Error while getting students info:\n\n" + e + "\n\n")
+            return null
+        }
+
+        return dataList;
+    }
+
+    async getProfessors() {
+
+        let professors = new Array();
+
+        try {
+            length = await this.contract.profesoresLength()
+            for (let i = 0; i < length; i++) {
+                let professor = await this.contract.profesores(i)
+                professors.push(professor)
+            }
 
         } catch (e) {
 
@@ -55,6 +84,56 @@ class SubjectService {
         }
         return professors;
     }
+
+    async getProfessorInfo() {
+
+        let professors = await this.getProfessors();
+        let dataList = new Array()
+
+        try {
+
+            for (let i = 0; i < professors.length; i++) {
+                let professor = await this.contract.datosProfesor(professors[i]);
+                console.log(professor)
+                dataList.push(professor);
+            }
+
+        } catch (e) {
+
+            console.log("Error while getting professors info:\n\n" + e + "\n\n")
+            return null
+
+        }
+
+        return dataList;
+    }
+
+
+    async setProfessor(professorAddress, nombre) {
+
+        var r = null
+
+        const accounts = await window.web3.eth.getAccounts()
+        const account = accounts[0]
+
+        try {
+
+            r = await this.contract.addProfesor(professorAddress, nombre, { from: account })
+
+        } catch (e) {
+
+            console.log("Error while setting professor: \n\n" + e + "\n\n")
+            return false
+
+        }
+
+        return r.receipt.status ? true : false
+
+    }
+
+
+
+
 
     async getOwner() {
 
@@ -75,7 +154,7 @@ class SubjectService {
         try {
             coord = await this.contract.coordinador();
         } catch (e) {
-            console.log("Error while getting coordinador:\n\n" + e + "\n\n")
+            console.log("Error while getting coordinator:\n\n" + e + "\n\n")
             return null
         }
         return coord;
@@ -150,7 +229,7 @@ class SubjectService {
         const account = accounts[0]
         try {
 
-            r = await this.contract.automatricula(name,dni,email,{ from: account })
+            r = await this.contract.automatricula(name, dni, email, { from: account })
 
         } catch (e) {
 
@@ -163,8 +242,51 @@ class SubjectService {
     }
 
 
+    async getEvaluations() {
+
+        let evaluations = new Array();
+
+        try {
+            length = await this.contract.evaluacionesLength()
+            for (let i = 0; i < length; i++) {
+                let evaluation = await this.contract.evaluaciones(i)
+                evaluations.push(evaluation)
+            }
+
+        } catch (e) {
+
+            console.log("Error while getting evaluations:\n\n" + e + "\n\n")
+
+            return null
+        }
+        return evaluations;
+    }
 
 
+    async setCalification(studentAddress, evaluationIndex, calificationType, calification) {
+
+        var r = null
+
+        var whoAmI = await this.whoAmI()
+        if (whoAmI != "professor" && whoAmI != "coordinator") return false
+
+        const accounts = await window.web3.eth.getAccounts()
+        const account = accounts[0]
+
+        try {
+
+            r = await this.contract.califica(studentAddress, evaluationIndex, calificationType, calification, { from: account })
+
+        } catch (e) {
+
+            console.log("Error while setting calification: \n\n" + e + "\n\n")
+            return false
+
+        }
+
+        return r.receipt.status ? true : false
+
+    }
 
 
 }

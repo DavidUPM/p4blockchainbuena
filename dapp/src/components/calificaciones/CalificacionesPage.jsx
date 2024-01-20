@@ -10,6 +10,7 @@ const CalificacionesPage = () => {
             <CalificacionesTotal/>
 
             <Calificar/>
+
         </section>
     );
 };

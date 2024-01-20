@@ -29,6 +29,9 @@ const AlumnoRow = ({alumnoIndex}) => {
         })();
     }, []);   // [] -> Sin dependencias. Solo se llama a useEffect una vez.
 
+
+    
+
     return <tr key={"ALU-" + alumnoIndex}>
         <th>A<sub>{alumnoIndex}</sub></th>
         <td>{alumnoDatos?.nombre}</td>

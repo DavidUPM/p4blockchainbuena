@@ -288,6 +288,62 @@ class SubjectService {
 
     }
 
+    async setEvaluation(name, date, percentage, minMark) {
+
+        var r = null
+
+        var whoAmI = await this.whoAmI()
+        if (whoAmI != "coordinator") return false
+
+        const accounts = await window.web3.eth.getAccounts()
+        const account = accounts[0]
+
+        date = parseInt(date,"10")
+        percentage = parseInt(date,"10")
+        minMark = parseInt (date, "10")
+
+        try {
+
+            r = await this.contract.creaEvaluacion(name, date, percentage, minMark, { from: account })
+
+        } catch (e) {
+
+            console.log("Error while setting new evaluation: \n\n" + e + "\n\n")
+            return false
+
+        }
+
+        return r.receipt.status ? true : false
+
+    }
+
+
+    async setStudent(address, name, dni, email) {
+
+        var r = null
+
+        var whoAmI = await this.whoAmI()
+        if (whoAmI != "owner") return false
+
+        const accounts = await window.web3.eth.getAccounts()
+        const account = accounts[0]
+
+        try {
+
+            r = await this.contract.matricular(address, name, dni, email, { from: account })
+
+        } catch (e) {
+
+            console.log("Error while setting new student: \n\n" + e + "\n\n")
+            return false
+
+        }
+
+        return r.receipt.status ? true : false
+
+    }
+
+
 
 }
 

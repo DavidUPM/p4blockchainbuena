@@ -53,18 +53,58 @@ const handleAutomatricularse = async () => {
     }
 };
 
-const mostrarAlumnosList = rol === "owner" || rol === "professor" || rol === "coordinator"
+const [addrNuevoAlumno, setAddrNuevoAlumno] = useState("");
+const [nombreNuevoAlumno, setNombreNuevoAlumno] = useState("");
+const [dniNuevoAlumno, setDniNuevoAlumno] = useState("");
+const [emailNuevoAlumno, setEmailNuevoAlumno] = useState("");
+const [mensajeNuevoAlumnoMatriculado, setmensajeNuevoAlumnoMatriculado] = useState("");
 
+const addrNuevoAlumnoIntroducido = (event) => {
+    setAddrNuevoAlumno(event.target.value);
+  };
+  
+const nombreNuevoAlumnoIntroducido = (event) => {
+    setNombreNuevoAlumno(event.target.value);
+  };
+
+  const dniNuevoAlumnoIntroducido = (event) => {
+    setDniNuevoAlumno(event.target.value);
+  };
+
+  const emailNuevoAlumnoIntroducido = (event) => {
+    setEmailNuevoAlumno(event.target.value);
+  };
+
+  const handleMatricularNuevoAlumno = async () => {
+    if (addrNuevoAlumno == null || nombreAlumno == null || dniAlumno == null || emailAlumno == null){
+        setmensajeNuevoAlumnoMatriculado("Rellene todos los campos");
+        
+    }else{
+        const matricula = (await new SubjectService(asignatura).setStudent(addrNuevoAlumno, nombreNuevoAlumno, dniNuevoAlumno, emailNuevoAlumno));
+        console.log(matricula)
+        if (matricula) {
+            setmensajeNuevoAlumnoMatriculado("Se ha matriculado correctamente al alumno");
+        } else {
+            setmensajeNuevoAlumnoMatriculado("Ha habido algun error en el proceso de añadir");
+        }
+        
+    }
+};
+
+
+ const mostrar = rol === "coordinator"  || rol === "owner" || rol === "professor" 
     return (
+        
         <div>
 
     <section className="AppAlumnos">
         
         <h2>Alumnos</h2>
         
-        {mostrarAlumnosList && <AlumnosList/>}
+        {mostrar && <AlumnosList/>}
         
     </section>
+
     <section className="FormularioMatricula">
         <h2>Formulario Matrícula</h2>
 
@@ -94,6 +134,41 @@ const mostrarAlumnosList = rol === "owner" || rol === "professor" || rol === "co
             </form>
         
     </section>
+{rol === "owner" && (
+    <section className="FormularioMatricula">
+        <h2>Formulario para matricular nuevos alumnos</h2>
+
+        <form>
+                <p>
+                    <input key="addrAlumno" type="text" name="addr" value={addrNuevoAlumno} placeholder="Dirección del alumno"
+                    onChange={addrNuevoAlumnoIntroducido}/>
+                </p>
+
+                <p>
+                    <input key="nombreNuevoAlumno" type="text" name="nombre" value={nombreNuevoAlumno} placeholder="Nombre del alumno"
+                    onChange={nombreNuevoAlumnoIntroducido}/>
+                </p>
+
+                <p>
+                    <input key="dniNuevoAlumno" type="text" name="dni" value={dniNuevoAlumno} placeholder="DNI"
+                    onChange={dniNuevoAlumnoIntroducido}/>
+                </p>
+
+                <p>
+                    <input key="emailNuevoAlumno" type="text" name="email" value={emailNuevoAlumno} placeholder="Email"
+                    onChange={emailNuevoAlumnoIntroducido}/>
+                </p>
+                
+
+                <button key="submit2" className="pure-button" type="button"
+                        onClick={
+                            handleMatricularNuevoAlumno
+                        }>Matricular nuevo alumno</button>
+                        
+            <p>{mensajeNuevoAlumnoMatriculado}</p>           
+            </form>
+        
+    </section>)}
     </div>
     );
 }

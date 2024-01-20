@@ -6,6 +6,7 @@ const EvaluacionesPage = () => (
         <h2>Evaluaciones</h2>
 
         <EvaluacionesList/>
+        
     </section>
 );
 

@@ -1,6 +1,6 @@
 import EvaluacionesHead from "./EvaluacionesHead.jsx";
 import EvaluacionesBody from "./EvaluacionesBody.jsx";
-
+import EvaluacionesAdd from "./EvaluacionAdd.jsx";
 
 const EvaluacionesList = () => (
     <section className="AppEvaluaciones">
@@ -10,6 +10,7 @@ const EvaluacionesList = () => (
             <EvaluacionesHead/>
             <EvaluacionesBody/>
         </table>
+        <EvaluacionesAdd/>
     </section>
 );
 
